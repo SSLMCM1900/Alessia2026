@@ -1,0 +1,5377 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Game Challenge</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial,sans-serif;
+            background: #edf1f5;
+        }
+
+
+        .header {
+            background: #263238;
+            color: white;
+            padding: 20px;
+            text-align: right;
+            font-size: 22px;
+        }
+
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 25px;
+        }
+
+        .linea {
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+
+        .posizione {
+            min-height: 80px;
+            background: #95a5a6;
+            color: white;
+        }
+
+
+        .tessere {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+
+        .tessera {
+            background: #f1c40f;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px #0003;
+        }
+
+
+        button {
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+
+        .unlock {
+            width: 100%;
+            background: #27ae60;
+            color: white;
+            font-size: 20px;
+        }
+
+
+        .play {
+            width: 100%;
+            background: #3498db;
+            color: white;
+        }
+
+
+        .categorie {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+
+        .categoria {
+            padding: 20px;
+            border-radius: 18px;
+            color: white;
+        }
+
+
+            .categoria h2 {
+                margin: 0 0 10px;
+            }
+
+
+        .grigia {
+            background: #7f8c8d;
+        }
+
+
+        .rossa {
+            background: #e74c3c;
+        }
+
+
+        .gialla {
+            background: #f1c40f;
+            color: #333;
+        }
+
+
+        .verde {
+            background: #27ae60;
+        }
+
+
+        .categoria button {
+            margin-top: 15px;
+            width: 100%;
+            background: white;
+            color: #333;
+        }
+
+
+        .bloccato {
+            opacity: .7;
+            cursor: not-allowed;
+        }
+
+
+
+        .contenitori {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .contenitore {
+            background: #3498db;
+            color: white;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .2s;
+        }
+
+
+            .contenitore:hover {
+                transform: scale(1.05);
+            }
+
+
+        .piastrina {
+            background: #f1c40f;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            margin: 30px 0;
+        }
+        .menu-button {
+            width: 100%;
+            margin-top: 20px;
+            background: #34495e;
+            color: white;
+        }
+
+
+            .menu-button:hover {
+                background: #2c3e50;
+            }
+        .abbinamenti {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .bottone-extra {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: #1565c0;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 18px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+
+            .bottone-extra:hover {
+                transform: scale(1.05);
+            }
+
+        .riga-indovina {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+
+        .descrizione {
+            flex: 1;
+            background: #eee;
+            padding: 8px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+
+
+        .spazio-personaggio {
+            width: 120px;
+            min-height: 40px;
+            font-size: 13px;
+            border-radius: 10px;
+        }
+
+
+
+        .tessere-piccole {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+
+
+            .tessere-piccole .tessera {
+                padding: 8px 12px;
+                font-size: 13px;
+                min-width: 90px;
+            }
+        .cruciverba {
+            display: grid;
+            grid-template-columns: repeat(15,38px);
+            gap: 1px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+
+
+
+        .cella {
+            width: 38px;
+            height: 38px;
+            border: 1px solid #555;
+            background: white;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 0;
+        }
+
+
+
+            .cella:focus {
+                outline: 3px solid #3498db;
+                background: #e8f4ff;
+            }
+
+
+
+        .nera {
+            width: 38px;
+            height: 38px;
+            background: #333;
+        }
+
+
+        .cella.parola {
+            background: #bfe8ff;
+        }
+
+
+        .cella.selezionata {
+            background: #4da6ff;
+        }
+        .cella {
+            position: relative;
+        }
+
+
+        .cerchio-blu::after {
+            content: "";
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border: 3px solid blue;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .numero {
+            position: absolute;
+            top: 2px;
+            left: 3px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .lettera {
+            font-size: 22px;
+        }
+        .domande {
+            text-align: left;
+            font-size: 14px;
+        }
+        .cella.errore {
+            color: red;
+            font-weight: bold;
+        }
+        .contenitore-domande {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+        }
+
+
+        .domande-colonna {
+            flex: 1;
+            min-width: 0;
+        }
+
+
+        .lista-domande {
+            height: 250px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+
+            .lista-domande p {
+                margin: 8px 0;
+            }
+        .speciale {
+            margin: 25px auto;
+            width: 90%;
+            max-width: 500px;
+            background: linear-gradient(135deg, #1565c0, #42a5f5);
+            color: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+
+            .speciale h2 {
+                margin-top: 0;
+                font-size: 26px;
+            }
+
+
+            .speciale p {
+                font-size: 18px;
+                margin: 15px 0;
+            }
+
+
+
+            .speciale .unlock {
+                background: gold;
+                color: black;
+                border: none;
+                border-radius: 15px;
+                padding: 15px 30px;
+                font-size: 20px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+
+
+                .speciale .unlock:hover {
+                    transform: scale(1.05);
+                }
+
+
+
+            .speciale .play {
+                background: white;
+                color: #1565c0;
+                border: none;
+                border-radius: 15px;
+                padding: 15px 35px;
+                font-size: 20px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+
+
+                .speciale .play:hover {
+                    transform: scale(1.05);
+                }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="header">
+
+        💰 Monete:
+        <span id="monete">0</span>
+
+    </div>
+
+
+    <div class="container">
+
+        <div id="app"></div>
+
+    </div>
+    <script>
+
+
+        // ==========================
+        // VARIABILI GENERALI
+        // ==========================
+
+
+        let monete = 0;
+
+
+        const app = document.getElementById("app");
+
+
+
+        function aggiornaMonete() {
+
+            document.getElementById("monete").innerHTML = monete;
+
+        }
+
+
+
+
+        // ==========================
+        // GIOCHI SBLOCCABILI
+        // ==========================
+
+
+        const giochi = [
+
+            {
+                nome: "SMISTAMENTO",
+                costo: 0,
+                sbloccato: false
+            },
+
+
+            {
+                nome: "LINEA DEL TEMPO",
+                costo: 80,
+                sbloccato: false
+            },
+
+
+            {
+                nome: "AVANTI UN ALTRO",
+                costo: 80,
+                sbloccato: false
+            },
+
+
+            {
+                nome: "INDOVINA CHI",
+                costo: 80,
+                sbloccato: false
+            },
+
+
+            {
+                nome: "CRUCIVERBONE",
+                costo: 80,
+                sbloccato: false
+            }
+
+        ];
+
+
+        let prossimo = 0;
+
+
+
+
+
+
+        // ==========================
+        // DATI SMISTAMENTO
+        // ==========================
+
+
+        const smistamento = {
+
+
+             Amici: {
+
+                nome: "Amici",
+
+                difficolta: "Facile",
+
+                premio: 20,
+
+                contenitori: [
+
+                    "Ostia",
+                    "Infernetto/Palocco",
+                    "Acilia/Axa",
+                    "Resto del mondo"
+
+                ],
+              
+
+
+
+                domande: [
+
+                    ["Figlio/a di Antonietta e Elio", "Ostia"],
+                    ["Figlio/a di Ciro e Emanuela", "Acilia/Axa"],
+                    ["Figlio/a di Claudia e Massimiliano", "Ostia"],
+                    ["Figlio/a di Francesca e Marco", "Resto del mondo"],
+                    ["Figlio/a di Nando e Nadia", "Infernetto/Palocco"],
+                    ["Figlio/a di Giorgio e Rossella", "Infernetto/Palocco"],
+                    ["Figlio/a di Francesca e Filippo", "Resto del mondo"],
+                    ["Figlio/a di Lara e Davide", "Acilia/Axa"],
+                    ["Figlio/a di Anna e Bob", "Resto del mondo"],
+                    ["Figlio/a di Franco e Alessandra", "Infernetto/Palocco"]
+
+                ]
+
+            },
+
+
+
+
+            Lazio: {
+
+                nome: "Lazio",
+
+                difficolta: "Media",
+
+                premio: 50,
+
+                contenitori: [
+
+                    "Porta",
+                    "Difesa",
+                    "Centrocampo",
+                    "Attacco"
+
+                ],
+
+
+
+
+                domande: [
+
+                    ["Rozehnal", "Difesa"],
+                    ["Hitzlsperger", "Centrocampo"],
+                    ["Proto", "Porta"],
+                    ["Mauricio", "Difesa"],
+                    ["Makinwa", "Attacco"],
+                    ["Perea", "Attacco"],
+                    ["Matuzalem", "Centrocampo"],
+                    ["Claudio Lopez", "Attacco"],
+                    ["Manfredini", "Centrocampo"],
+                    ["Stankevicius", "Difesa"]
+
+                ]
+
+            },
+
+
+
+
+
+            HarryPotter: {
+
+                nome: "Harry Potter",
+
+                difficolta: "Difficile",
+
+                premio: 100,
+
+
+                contenitori: [
+
+                    "Grifondoro",
+                    "Serpeverde",
+                    "Corvonero",
+                    "Tassorosso"
+
+                ],
+
+
+
+                domande: [
+
+                    ["Minerva McGranitt", "Grifondoro"],
+                    ["Lumacorno", "Serpeverde"],
+                    ["Cho Chang", "Corvonero"],
+                    ["Cedric Diggory", "Tassorosso"],
+                    ["Lavanda Brown", "Grifondoro"],
+                    ["Ninfadora Tonks", "Tassorosso"],
+                    ["Luna Lovegood", "Corvonero"],
+                    ["Gilderoy Allock", "Corvonero"],
+                    ["Peter Minus", "Grifondoro"],
+                    ["Regulus Arcturus Black", "Serpeverde"]
+
+                ]
+
+            }
+
+
+        };
+
+
+
+
+
+
+
+
+        // ==========================
+        // DATI LINEA DEL TEMPO
+        // ==========================
+
+
+        const lineaTempo = {
+
+
+            HarryPotter: {
+
+
+                nome: "Harry Potter",
+
+                difficolta: "Facile",
+
+                premio: 20,
+
+
+                eventi: [
+                    ["Dobby muore a Villa Malfoy", 8],
+                    ["Harry scopre lo Specchio delle Brame", 1],
+                    ["La Battaglia di Hogwarts ha inizio", 10],
+                    ["Draco Malfoy diventa Prefetto", 4],
+                    ["Harry entra nella Foresta Proibita per affrontare Voldemort", 9],
+                    ["Nasce l'Esercito di Silente", 5],
+                    ["Sirius Black fugge da Azkaban", 2],
+                    ["Silente viene ucciso da Piton", 6],
+                    ["Harry, Ron e Hermione si infiltrano nel Ministero della Magia usando la Pozione Polisucco", 7],
+                    ["Viene scelto il quarto campione del Torneo Tremaghi", 3]
+                ]
+
+
+            },
+
+
+            Amici: {
+
+
+                nome: "Amici",
+
+                difficolta: "Media",
+
+                premio: 50,
+
+
+                eventi: [
+
+                    ["Irene si trasferisce a Londra", 1],
+                    ["Marco e Giulia vanno a vivere insieme", 5],
+                    ["Prima padel di gruppo", 8],
+                    ["Rissa da InZona", 10],
+                    ["Rosi e Nico vanno in Portogallo", 3],
+                    ["Cheti va in Trentino", 6],
+                    ["Stella si laurea", 9],
+                    ["Viaggio di gruppo per la laurea di Paola", 7],
+                    ["Simone entra alle poste", 4],
+                    ["Brolla prende Dida", 2]
+
+                ]
+
+
+            },
+
+
+
+
+          
+
+
+
+            Lazio: {
+
+
+                nome: "Lazio",
+
+                difficolta: "Difficile",
+
+                premio: 100,
+
+
+                eventi: [
+
+                    ["Lotito diventa Presidente", 7],
+                    ["Prima puntata di Lazialità in TV", 4],
+                    ["Nesta passa al Milan", 5],
+                    ["Di Canio segna il suo ultimo goal al derby", 8],
+                    ["Secondo scudetto", 3],
+                    ["Vittoria della quarta coppa italia", 6],
+                    ["Julio Velasco diventa direttore generale", 2],
+                    ["Segna un portiere in Champions League", 10],
+                    ["40 anni dalla morte di Maestrelli", 9],
+                    ["La Lazio dei -9", 1]
+
+                ]
+
+
+            }
+
+
+        };
+
+        // ==========================
+        // DATI AVANTI UN ALTRO
+        // ==========================
+
+
+        const avantiAltro = {
+
+
+
+            HarryPotter: {
+
+
+                nome: "Harry Potter",
+
+                difficolta: "Facile",
+
+                premio: 20,
+
+
+                domande: [
+
+
+                    ["Quale NON è un incantesimo proibito?",
+                        "Crucio",
+                        "Expelliarmus"],
+
+
+                    ["Chi ha i genitori babbani?",
+                        "Ron",
+                        "Hemione"],
+
+
+                    ["Chi ha combattuto nella prima guerra magica?",
+                        "Harry",
+                        "Hagrid"],
+
+
+                    ["Come si chiamava la prigione da cui scappa Sirius Black?",
+                        "Alcatraz",
+                        "Azkaban"],
+
+
+                    ["Quale di questi è un horclux?",
+                        "Spada di Grifondoro",
+                        "Diario di Tom Riddle"],
+
+
+                    ["Quale NON è un dono della morte?",
+                        "Mantello dell' invisibilità",
+                        "Diadema di Priscilla Corvonero"],
+
+
+                    ["Quale gemello Weasley muore nella battaglia di Hogwarts?",
+                        "George",
+                        "Fred"],
+
+
+                    ["Di che razza è il cane expecto patronus di Ron?",
+                        "Border Collie",
+                        "Jack Russell"],
+
+
+                    ["Cosa deve scrivere per punizione Harry con la penna della Umbridge?",
+                        "I bugiardi saranno puniti",
+                        "Non devo dire bugie"],
+
+
+                    ["Come si chiama il Cerbero di Hagrid?",
+                        "Laffy",
+                        "Fuffi"]
+
+                ]
+
+
+            },
+
+
+
+
+
+
+            Lazio: {
+
+
+                nome: "Lazio",
+
+                difficolta: "Media",
+
+                premio: 50,
+
+
+                domande: [
+
+
+                    ["Chi ha più presenze con la maglia della Lazio?",
+                        "Favalli",
+                        "Radu"],
+
+
+                    ["A quale squadra è stato venduto Hernanes?",
+                        "Juventus",
+                        "Inter"],
+
+
+                    ["Quale attaccante è stato pagato 90 miliardi di lire?",
+                        "Crespo",
+                        "Vieri"],
+
+
+                    ["Chi segna il goal nella supercoppa europea vinta dalla Lazio?",
+                        "Vieri",
+                        "Salas"],
+
+
+                    ["Quale di questa coppia di fratelli ha giocato insieme alla Lazio",
+                        "Inzaghi",
+                        "Filippini"],
+
+
+                    ["Chi è in top 5 degli allenatori con più punti in serie A con la Lazio",
+                        "Tommaso Maestrelli",
+                        "Delio Rossi"],
+
+
+                    ["Chi segna il goal vittoria nel derby del 19 marzo 2008 al 93'",
+                        "Klose",
+                        "Behrami"],
+
+
+                    ["Quale hit estiva ballava Corradi come esultanza",
+                        "Macarena",
+                        "Asereje"],
+
+
+                    ["Chi era l'allenatore della Roma il 26 maggio 2013",
+                        "Rudi Garcia",
+                        "Andreazzoli"],
+
+
+                    ["Quale di questi trofei NON è stato mai vinto dalla Lazio",
+                        "Coppa delle Coppe",
+                        "Coppa UEFA"]
+
+                ]
+
+
+            },
+
+
+
+
+
+
+            Amici: {
+
+
+                nome: "Amici",
+
+                difficolta: "Difficile",
+
+                premio: 100,
+
+
+                domande: [
+
+
+                    ["Nico quale parola dovrebbe aver sentito più spesso?",
+                        "Cio",
+                        "Belin"],
+
+
+                    ["Come si chiama la canzone ispirata a Giulia?",
+                        "La regina in monopattino",
+                        "La matrona in bicicletta"],
+
+
+                    ["Quando Irene parla con sua mamma, come potrebbe dire la parola 'cane'?",
+                        "Gǒu",
+                        "Inu"],
+
+
+                    ["Di che segno è Caterina?",
+                        "Gemelli",
+                        "Cancro"],
+
+
+                    ["Come si chiama la sorella di Virginia?",
+                        "Francesca",
+                        "Sofia"],
+
+
+                    ["La casa di Roma di Sara e la casa di Simone hanno una cosa in comune. Quale?",
+                        "Nome della via",
+                        "Civico"],
+
+
+                    ["La casa di Roma di Caterina e la casa di Simone hanno una cosa in comune. Quale?",
+                        "Civico",
+                        "Nome della via"],
+
+
+                    ["Chi delle due abita piu lontano dal London Bridge ",
+                        "Irene",
+                        "Paola"],
+
+
+                    ["Quali sono i colori sociali della squadra della cittadina dove vivono i parenti di Rosi?",
+                        "Giallo e rosso",
+                        "Bianco e blu"],
+
+
+                    ["Chi dei due ha il compleanno più lontano al Natale più vicino?",
+                        "Edoardo",
+                        "Giulia"]
+
+                ]
+
+
+            }
+
+
+        };
+
+        // ==========================
+        // DATI INDOVINA CHI
+        // ==========================
+
+
+        const indovinaChi = {
+
+
+
+            Amici: {
+
+
+                nome: "Amici",
+
+                difficolta: "Facile",
+
+                premio: 20,
+
+
+                coppie: [
+
+
+                    ["Sia io che mio padre siamo molto tifosi, ma non dello stesso sport", "Giulia"],
+
+
+                    ["Ho lo stesso nome della sorella di un altro di noi, ma io in italiano", "Stella"],
+
+
+                    ["Il mio è l' ultimo compleanno prima del Natale", "Marco"],
+
+
+                    ["Mio papà lavorava al Vaticano. Per i miei studi anche per me potrebbe essere un buon posto", "Virginia"],
+
+
+                    ["Con i miei fratelli mi passo gli stessi anni e mesi di differenza", "Edoardo"],
+
+
+                    ["Ho avuto a che fare con macchine e miliardari", "Irene"],
+
+
+                    ["Ho fatto più anni nella facoltà in cui non mi sono laureato che in quella in cui mi sono laureato", "Simone"],
+
+
+                    ["La regione in cui vivo e lavoro non è bagnata dal mare", "Caterina"],
+
+
+                    ["Sono la persona con meno lettere fra nome e cognome", "Paola"],
+
+
+                    ["Il mio nome ha la stessa radice del nome della mamma di un altro di noi", "Rosalba"]
+
+                ]
+
+
+            },
+
+
+
+
+            Lazio: {
+
+
+                nome: "Lazio",
+
+                difficolta: "Media",
+
+                premio: 50,
+
+
+                coppie: [
+
+
+                    ["Ho segnato in una finale europea. Sono stato pallone d'oro", "Nedved"],
+
+
+                    ["Sono il secondo giocatore per presenze nella storia della Lazio", "Favalli"],
+
+
+                    ["Durante una partita ho tirato un' arancia a un guardalinee", "D'Amico"],
+
+
+                    ["Sono il capitano del primo scudetto", "Wilson"],
+
+
+                    ["Quando sono arrivato ero straniero, quando sono andato via no", "Ledesma"],
+
+
+                    ["Ho vinto un mondiale. In quel mondiale ho segnato 2 goal", "Klose"],
+
+
+                    ["Da giocatore ho vinto uno scudetto. Da allenatore una coppa Italia", "Mancini"],
+
+
+                    ["Ero nella Lazio del -9, ma anche nella prima Lazio di Lotito...", "Caso"],
+
+
+                    ["Dopo una sconfitta in un derby feci bruciare le maglie da gioco", "Lorenzo"],
+
+
+                    ["Ho giocato sia nella Lazio che nella Roma", "Romagnoli"]
+
+                ]
+
+
+            },
+
+
+
+
+
+
+            HarryPotter: {
+
+
+                nome: "Harry Potter",
+
+                difficolta: "Difficile",
+
+                premio: 100,
+
+
+                coppie: [
+
+
+                    ["Sono professoressa ad Hogwarts. Sono esperta di Profezie", "Sibilla Cooman"],
+
+
+                    ["Muoio nel quinto libro", "Sirius Black"],
+
+
+                    ["Sono stato un testurbante per il cappello", "Peter Minus"],
+
+
+                    ["Sono il principe mezzosangue", "Severus Piton"],
+
+
+                    ["Sono stato/a preside di Hogwarts durante dopo la seconda guerra magica", "Minerva McGranitt"],
+
+
+                    ["Mi sacrifico durante una partita di scacchi", "Ron Weasley"],
+
+
+                    ["Sono un voltafaccia. Letteralmente voltafaccia...", "Quirinus Raptor"],
+
+
+                    ["Sono un mago ma non di Hogwarts", "Viktor Krum"],
+
+
+                    ["Ero proprietario di una locanda", "Aberforth Silente"],
+
+
+                    ["Un mio parente ha posseduto la bacchetta di Sambuco per poco tempo", "Lucius Malfoy"]
+
+                ]
+
+
+            }
+
+
+        };
+
+        // ==========================
+        // DATI CRUCIVERBONE
+        // ==========================
+
+
+        const cruciverbone = {
+
+
+            premio: 200,
+
+
+
+            // griglia 10x10
+            // # = casella nera
+            // lettere = soluzione
+
+
+            soluzione: [
+    ["G", "A", "Z", "Z", "A", "#", "R", "#", "B", "I", "A", "V", "A", "#", "R"],
+    ["E", "N", "#", "I", "N", "T", "E", "R", "#", "N", "#", "U", "#", "P", "E"],
+    ["O", "D", "D", "O", "#", "E", "X", "P", "E", "C", "T", "O", "#", "A", "D"],
+    ["R", "E", "#", "#", "M", "R", "#", "#", "L", "E", "T", "T", "E", "R", "A"],
+    ["G", "R", "A", "Z", "I", "E", "#", "S", "M", "#", "#", "A", "V", "E", "#"],
+    ["E", "S", "C", "A", "L", "A", "N", "T", "E", "#", "#", "#", "O", "N", "E"],
+    ["#", "O", "C", "R", "A", "#", "P", "A", "T", "R", "I", "C", "#", "T", "M"],
+    ["#", "N", "I", "A", "N", "G", "#", "I", "T", "O", "#", "E", "V", "I", "A"],
+    ["S", "#", "O", "T", "#", "U", "#", "R", "I", "M", "A", "#", "A", "#", "I"],
+    ["T", "R", "#", "E", "#", "S", "M", "S", "#", "A", "P", "E", "R", "O", "L"]
+            ],
+            cerchiBlu: [
+                { r: 0, c: 8 },
+                { r: 1, c: 11 },
+                { r: 2, c: 2 },
+                { r: 3, c: 14 },
+                { r: 6, c: 6 },
+                { r: 7, c: 11 },
+                { r: 8, c: 0 },
+                { r: 9, c: 0 },
+            ],
+
+
+
+            domande: [
+
+                {
+                    numero: 1,
+                    tipo: "orizzontale",
+                    testo: "Un personaggio di harry potter ma anche il soprannome di un fortissimo giocatore anni '90 della Lazio",
+                    risposta: "GAZZA"
+                },
+
+                {
+                    numero: 6,
+                    tipo: "orizzontale",
+                    testo: "Difensore della Lazio che ha vinto la coppa Italia 2013 da titolare",
+                    risposta: "BIAVA"
+                },
+
+                {
+                    numero: 10,
+                    tipo: "orizzontale",
+                    testo: "Ce le hanno Irene e Stellina",
+                    risposta: "EN"
+                },
+                {
+                    numero: 11,
+                    tipo: "orizzontale",
+                    testo: "Dopo un loro goal la Nord espose un famoso striscione di 'dispiacere' ",
+                    risposta: "INTER"
+                },
+
+                {
+                    numero: 14,
+                    tipo: "orizzontale",
+                    testo: "Prime lettere della città dove qualcuno di noi ha mangiato una pizza pesantissima e caratteristica",
+                    risposta: "PE"
+                },
+                {
+                    numero: 15,
+                    tipo: "orizzontale",
+                    testo: "Ex capitano della Lazio anche campione del mondo",
+                    risposta: "ODDO"
+                },
+                {
+                    numero: 16,
+                    tipo: "orizzontale",
+                    testo: "Parola magica che associata ad un' altra fa comparire un' animale guida che protegge dai dissennatori",
+                    risposta: "EXPECTO"
+                },
+                {
+                    numero: 19,
+                    tipo: "orizzontale",
+                    testo: "Nella Lazio di adesso lo sono Isaksen e Cancellieri",
+                    risposta: "AD"
+                },
+                {
+                    numero: 20,
+                    tipo: "orizzontale",
+                    testo: "Beppe Signori era rappresentato così in uno storico stendardo in curva nord",
+                    risposta: "RE"
+                },
+                {
+                    numero: 21,
+                    tipo: "orizzontale",
+                    testo: " Lo era nel 2000 Eriksson",
+                    risposta: "MR"
+                },
+                {
+                    numero: 22,
+                    tipo: "orizzontale",
+                    testo: "La ricevi al compimento degli 11 anni da Hogwarts",
+                    risposta: "LETTERA"
+                },
+                {
+                    numero: 24,
+                    tipo: "orizzontale",
+                    testo: "Lo dice in continuazione uno di noi anche in contesti in cui non c'è reale bisogno",
+                    risposta: "GRAZIE"
+                },
+                {
+                    numero: 27,
+                    tipo: "orizzontale",
+                    testo: "Compianto ex giocatore della Lazio morto nel 2022",
+                    risposta: "SM"
+                },
+                {
+                    numero: 28,
+                    tipo: "orizzontale",
+                    testo: "Un saluto romano che specchiato da il nome di un personaggio dei Cesaroni molto amato da qualcuno di noi...",
+                    risposta: "AVE"
+                },
+                {
+                    numero: 29,
+                    tipo: "orizzontale",
+                    testo: "Centrocampista della Lazio dimenticabilissimo che ha giocato dal 2020 al 2022. Di nome fa Gonzalo",
+                    risposta: "ESCALANTE"
+                },
+                {
+                    numero: 31,
+                    tipo: "orizzontale",
+                    testo: "Questo rimane a Simone se gli levi il ragazzo di Paola...",
+                    risposta: "ONE"
+                },
+                {
+                    numero: 33,
+                    tipo: "orizzontale",
+                    testo: "Una tonalità del tuo colore preferito",
+                    risposta: "OCRA"
+                },
+                {
+                    numero: 34,
+                    tipo: "orizzontale",
+                    testo: "Difensore spagnolo prima odiato e poi amato da molti tifosi",
+                    risposta: "PATRIC"
+                },
+                {
+                    numero: 37,
+                    tipo: "orizzontale",
+                    testo: "Il più compianto allenatore della Lazio",
+                    risposta: "TM"
+                },
+                {
+                    numero: 38,
+                    tipo: "orizzontale",
+                    testo: "Attaccante del Milan che segna in un Lazio-Milano 0-2 del 2016",
+                    risposta: "NIANG"
+                },
+                {
+                    numero: 40,
+                    tipo: "orizzontale",
+                    testo: "Desinenza di un personaggio che se ci lasciasse saremmo tutti più contenti",
+                    risposta: "ITO"
+                },
+                {
+                    numero: 41,
+                    tipo: "orizzontale",
+                    testo: "Un' 'acqua' che compare spesso in alcune nostre uscite",
+                    risposta: "EVIA"
+                },
+                {
+                    numero: 44,
+                    tipo: "orizzontale",
+                    testo: "Iniziali di un mese in cui nessuno di noi compie gli anni",
+                    risposta: "OT"
+                },
+                {
+                    numero: 45,
+                    tipo: "orizzontale",
+                    testo: "La caratteristica principale dei nostri bigliettini di auguri",
+                    risposta: "RIMA"
+                },
+                {
+                    numero: 47,
+                    tipo: "orizzontale",
+                    testo: "Iniziali del cattivo di Harry Potter e di un ex capitano della Lazio con più di 100 goal nell'era Lotito",
+                    risposta: "TR"
+                },
+                {
+                    numero: 48,
+                    tipo: "orizzontale",
+                    testo: "Tra i più forti centrocampisti che ha avuto la Lazio negli ultimi 30 anni",
+                    risposta: "SMS"
+                },
+                {
+                    numero: 49,
+                    tipo: "orizzontale",
+                    testo: "Giulia lo apprezza più di te. Te ne consumi una sua variante più di Giulia",
+                    risposta: "APEROL"
+                },
+                {
+                    numero: 1,
+                    tipo: "verticale",
+                    testo: "Il gemello Wesleay che non muore nella seconda guerra fra maghi",
+                    risposta: "GEORGE"
+                },
+                {
+                    numero: 2,
+                    tipo: "verticale",
+                    testo: "Detiene il record di presenze consecutive nella storia della Lazio",
+                    risposta: "ANDERSON"
+                },
+                {
+                    numero: 3,
+                    tipo: "verticale",
+                    testo: "Uno di Marco sta in America",
+                    risposta: "ZIO"
+                },
+                {
+                    numero: 4,
+                    tipo: "verticale",
+                    testo: "Segna il gol decisivo per la coppa italia 1997/1998",
+                    risposta: "AN"
+                },
+                {
+                    numero: 5,
+                    tipo: "verticale",
+                    testo: "Amato Pastore tedesco di Sara",
+                    risposta: "REX"
+                },
+                {
+                    numero: 7,
+                    tipo: "verticale",
+                    testo: "Incantesimo che genera fuoco dalla punta della bacchetta, diviso a metà...",
+                    risposta: "INCE"
+                },
+                {
+                    numero: 8,
+                    tipo: "verticale",
+                    testo: "Lo è la curva da un anno",
+                    risposta: "VUOTO"
+                },
+                {
+                    numero: 9,
+                    tipo: "verticale",
+                    testo: "Il nome di battesimo di un centrocampista esploso quest' anno",
+                    risposta: "REDA"
+                },
+              
+                {
+                    numero: 12,
+                    tipo: "verticale",
+                    testo: "Sono protagoniste di uno scambio incessante durante le serate tra alcuni di noi",
+                    risposta: "TEREA"
+                },
+                {
+                    numero: 13,
+                    tipo: "verticale",
+                    testo: "Iniziali cognome-nome di un portiere visto ad Auronzo",
+                    risposta: "RP"
+                },
+                {
+                    numero: 14,
+                    tipo: "verticale",
+                    testo: "Cognome di una di noi",
+                    risposta: "PARENTI"
+                },
+                {
+                    numero: 17,
+                    tipo: "verticale",
+                    testo: "Noi tifosi ce li dobbiamo mettere tutto l' anno in testa... e per ora ci stiamo riuscendo ",
+                    risposta: "ELMETTI"
+                },
+                {
+                    numero: 18,
+                    tipo: "verticale",
+                    testo: "La doppia nel giocatore che faceva finta di infortunarsi prima di ogni derby ",
+                    risposta: "TT"
+                },
+                {
+                    numero: 21,
+                    tipo: "verticale",
+                    testo: "Big italiana eliminata nelle coppe italia vinte nel 1998, 2009 e 2019",
+                    risposta: "MILAN"
+                },
+                {
+                    numero: 23,
+                    tipo: "verticale",
+                    testo: "L' olio che esce dai campi di Colle",
+                    risposta: "EVO"
+                },
+                {
+                    numero: 25,
+                    tipo: "verticale",
+                    testo: "Incantesimo che serve per trovare gli oggetti",
+                    risposta: "ACCIO"
+                },
+                {
+                    numero: 26,
+                    tipo: "verticale",
+                    testo: "Ala argentina della Lazio meteora del 2008-2009",
+                    risposta: "ZARATE"
+                },
+                {
+                    numero: 27,
+                    tipo: "verticale",
+                    testo: "Le scale nella quotidianità di Irene e Paola",
+                    risposta: "STAIRS"
+                },
+                {
+                    numero: 30,
+                    tipo: "verticale",
+                    testo: "L' altro indiziato della profezia oltre ad Harry Potter",
+                    risposta: "NP"
+                },
+                {
+                    numero: 32,
+                    tipo: "verticale",
+                    testo: "L' unica cosa che hanno le nostre università in più rispetto ad Hogwarts...",
+                    risposta: "EMAIL"
+                },
+                {
+                    numero: 35,
+                    tipo: "verticale",
+                    testo: "I musei di questa città sono presidiati da una di noi. L' ha presa in faccia nel 2013.",
+                    risposta: "ROMA"
+                },
+                {
+                    numero: 36,
+                    tipo: "verticale",
+                    testo: "Agli estremi del cognome di una di noi",
+                    risposta: "CE"
+                },
+                {
+                    numero: 39,
+                    tipo: "verticale",
+                    testo: "Soprannome di un' ala sorprendente di quest' anno ",
+                    risposta: "MR"
+                },
+                {
+                    numero: 42,
+                    tipo: "verticale",
+                    testo: "Dicono che esiste... ma per la Lazio no",
+                    risposta: "VAR"
+                },
+                {
+                    numero: 43,
+                    tipo: "verticale",
+                    testo: "Le prime due lettere di una di noi, che sono anche le prime due lettere del suo fidanzato",
+                    risposta: "ST"
+                },
+                {
+                    numero: 46,
+                    tipo: "verticale",
+                    testo: "Punta arrivata alla fine dell' ultimo mercato",
+                    risposta: "AP"
+                }
+
+
+
+            ]
+
+           
+        };
+        // ==========================
+        // RECORD
+        // ==========================
+
+
+
+        let record = {
+
+            Lazio: 0,
+            Amici: 0,
+            HarryPotter: 0
+
+        };
+
+
+        let giocato = {
+
+            Lazio: false,
+            Amici: false,
+            HarryPotter: false
+
+        };
+
+
+
+
+        let recordTempo = {
+
+            Amici: 0,
+            HarryPotter: 0,
+            Lazio: 0
+
+        };
+
+        // ==========================
+        // RECORD AVANTI UN ALTRO
+        // ==========================
+
+
+        let recordAvanti = {
+
+            HarryPotter: 0,
+            Lazio: 0,
+            Amici: 0
+
+        };
+
+
+
+        let giocatoAvanti = {
+
+            HarryPotter: false,
+            Lazio: false,
+            Amici: false
+
+        };
+
+        let giocatoTempo = {
+
+            Amici: false,
+            HarryPotter: false,
+            Lazio: false
+
+        };
+        // ==========================
+        // RECORD INDOVINA CHI
+        // ==========================
+
+
+        let recordIndovina = {
+
+            HarryPotter: 0,
+            Lazio: 0,
+            Amici: 0
+
+        };
+
+
+        let giocatoIndovina = {
+
+            HarryPotter: false,
+            Lazio: false,
+            Amici: false
+
+        };
+
+        // ==========================
+        // MENU PRINCIPALE
+        // ==========================
+        let crucicorretto = 0;
+        let contenutoSpecialeSbloccato = 0
+
+
+        let costoContenutoSpeciale = 360;
+
+        function mostraMenu() {
+
+
+            app.innerHTML = "";
+
+
+
+            giochi.forEach(g => {
+
+
+                if (g.sbloccato) {
+
+
+                    let div = document.createElement("div");
+
+                    div.className = "card";
+
+
+                    div.innerHTML = `
+
+<h2>${g.nome}</h2>
+
+`;
+
+
+
+                    if (g.nome === "SMISTAMENTO") {
+
+
+                        div.innerHTML += `
+
+<button class="play"
+
+onclick="menuSmistamento()">
+
+GIOCA
+
+</button>
+
+`;
+
+                    }
+
+
+
+                    if (g.nome === "LINEA DEL TEMPO") {
+
+
+                        div.innerHTML += `
+
+<button class="play"
+
+onclick="menuLineaTempo()">
+
+GIOCA
+
+</button>
+
+`;
+
+                    }
+
+                    if (g.nome === "AVANTI UN ALTRO") {
+
+
+                        div.innerHTML += `
+
+<button class="play"
+
+onclick="menuAvantiAltro()">
+
+GIOCA
+
+</button>
+
+`;
+
+                    }
+
+                    if (g.nome === "INDOVINA CHI") {
+
+
+                        div.innerHTML += `
+
+<button class="play"
+
+onclick="menuIndovinaChi()">
+
+GIOCA
+
+</button>
+
+`;
+
+                    }
+                    if (g.nome === "CRUCIVERBONE") {
+
+
+                        div.innerHTML += `
+
+<button class="play"
+
+onclick="iniziaCruciverbone()">
+
+GIOCA
+
+</button>
+
+`;
+
+                    }
+                    app.appendChild(div);
+
+
+                }
+
+
+            });
+
+
+
+
+
+            if (prossimo < giochi.length) {
+
+
+
+                let bottone = document.createElement("button");
+
+
+                bottone.className = "unlock";
+
+
+
+                if (prossimo === 0) {
+
+
+                    bottone.innerHTML =
+                        "SBLOCCA IL PRIMO GIOCO (0 crediti)";
+
+
+                }
+
+                else if (prossimo === giochi.length - 1) {
+
+
+                    bottone.innerHTML =
+                        "SBLOCCA IL GIOCO FINALE (" +
+                        giochi[prossimo].costo +
+                        " crediti)";
+
+
+                }
+
+                else {
+
+
+                    bottone.innerHTML =
+                        "SBLOCCA IL PROSSIMO GIOCO (" +
+                        giochi[prossimo].costo +
+                        " crediti)";
+
+
+                }
+
+
+
+
+
+                bottone.onclick = function () {
+
+
+                    let costo = giochi[prossimo].costo;
+
+
+
+                    if (monete < costo) {
+
+
+                        alert("Crediti insufficienti");
+
+                        return;
+
+
+                    }
+
+
+
+                    monete -= costo;
+
+
+                    giochi[prossimo].sbloccato = true;
+
+
+                    prossimo++;
+
+
+                    aggiornaMonete();
+
+
+                    mostraMenu();
+
+
+                }
+
+
+
+                app.appendChild(bottone);
+
+         
+            }
+
+            // ==========================
+            // SBLOCCO CONTENUTO SPECIALE
+            // ==========================
+            if (crucicorretto == 1) {
+                if (contenutoSpecialeSbloccato == 0) {
+
+
+                    let speciale = document.createElement("div");
+
+                    speciale.className = "card speciale";
+
+
+                    speciale.innerHTML = `
+
+    <h2>🔓 SBLOCCA CONTENUTO SPECIALE</h2>
+
+    <p>
+        Nuovi contenuti extra disponibili
+    </p>
+
+    <button class="unlock"
+    id="bottone-speciale">
+
+        SBLOCCA (${costoContenutoSpeciale} crediti)
+
+    </button>
+
+`;
+
+
+                    speciale.querySelector(
+                        "#bottone-speciale"
+                    ).onclick = function () {
+
+
+                        if (monete < costoContenutoSpeciale) {
+
+                            alert("Crediti insufficienti");
+
+                            return;
+
+                        }
+
+
+                        monete -= costoContenutoSpeciale;
+
+
+                        contenutoSpecialeSbloccato = 1;
+
+
+                        localStorage.setItem(
+                            "contenutoSpecialeSbloccato",
+                            "true"
+                        );
+
+
+                        aggiornaMonete();
+
+
+                        mostraMenu();
+
+
+                    };
+
+
+                    app.appendChild(speciale);
+
+                }
+                else {
+
+
+                    let speciale = document.createElement("div");
+
+                    speciale.className = "card speciale";
+
+
+                    speciale.innerHTML = `
+
+    <h2>🔓 CONTENUTO SPECIALE SBLOCCATO</h2>
+
+    <button class="play"
+    onclick="apriContenutiSpeciali()">
+
+        ENTRA
+
+    </button>
+
+`;
+
+
+                    app.appendChild(speciale);
+
+
+                }
+            }
+        
+        }
+
+
+
+
+
+
+
+
+
+        // ==========================
+        // SMISTAMENTO
+        // ==========================
+
+
+        function stato(tipo) {
+
+
+            let valore = record[tipo];
+
+            let massimo = smistamento[tipo].premio;
+
+
+
+            if (!giocato[tipo])
+
+                return "grigia";
+
+
+            if (valore === 0)
+
+                return "rossa";
+
+
+            if (valore < massimo)
+
+                return "gialla";
+
+
+            return "verde";
+
+
+        }
+
+
+
+
+
+
+        function creaCategoria(tipo) {
+
+
+            let g = smistamento[tipo];
+
+
+            let colore = stato(tipo);
+
+
+            let mancanti = g.premio - record[tipo];
+
+
+            let bottone = "";
+
+
+
+            if (colore !== "verde") {
+
+
+                bottone = `
+
+<button onclick="iniziaSmistamento('${tipo}')">
+
+GIOCA
+
+</button>
+
+`;
+
+            }
+
+
+
+
+            return `
+
+<div class="categoria ${colore}">
+
+
+<h2>${g.nome}</h2>
+
+
+<p>${g.difficolta}</p>
+
+
+<p>
+
+🪙 ${record[tipo]} / ${g.premio}
+
+</p>
+
+
+<p>
+
+Ancora disponibili:
+${mancanti}
+
+</p>
+
+
+${bottone}
+
+
+</div>
+
+`;
+
+        }
+
+
+
+
+
+
+
+
+        function menuSmistamento() {
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h1>SMISTAMENTO</h1>
+
+
+
+<div class="categorie">
+
+
+${creaCategoria("Amici")}
+
+
+${creaCategoria("Lazio")}
+
+
+${creaCategoria("HarryPotter")}
+
+
+</div>
+
+
+
+
+<button class="menu-button"
+
+onclick="mostraMenu()">
+
+⬅ TORNA AL MENU GIOCHI
+
+</button>
+
+
+
+</div>
+
+`;
+
+        }
+
+
+
+
+
+
+
+        let partitaSmistamento = {};
+
+
+
+
+
+
+        function iniziaSmistamento(tipo) {
+
+
+            let dati = smistamento[tipo];
+
+
+
+            partitaSmistamento = {
+
+
+                tipo: tipo,
+
+
+                domande: [...dati.domande]
+                    .sort(() => Math.random() - 0.5),
+
+
+                numero: 0,
+
+
+                corrette: 0
+
+
+            };
+
+
+
+            mostraDomandaSmistamento();
+
+
+        }
+
+
+
+
+
+
+        function mostraDomandaSmistamento() {
+
+
+
+            let dati = smistamento[partitaSmistamento.tipo];
+
+
+            let domanda =
+
+                partitaSmistamento.domande[
+                partitaSmistamento.numero
+                ];
+
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h2>${dati.nome}</h2>
+
+
+<h3>
+
+Domanda ${partitaSmistamento.numero + 1}/10
+
+</h3>
+
+
+
+
+<div class="piastrina">
+
+${domanda[0]}
+
+</div>
+
+
+
+
+<div class="contenitori">
+
+
+${dati.contenitori.map(c => `
+
+
+<button class="contenitore"
+
+onclick="rispostaSmistamento('${c}')">
+
+${c}
+
+</button>
+
+
+`).join("")}
+
+
+
+</div>
+
+
+
+
+<button class="menu-button"
+
+onclick="menuSmistamento()">
+
+⬅ ESCI DALLA PARTITA
+
+</button>
+
+
+
+</div>
+
+`;
+
+        }
+
+
+
+
+
+
+        function rispostaSmistamento(risposta) {
+
+
+            let corretta =
+
+                partitaSmistamento.domande[
+                partitaSmistamento.numero
+                ][1];
+
+
+
+            if (risposta === corretta) {
+
+                partitaSmistamento.corrette++;
+
+            }
+
+
+
+            partitaSmistamento.numero++;
+
+
+
+            if (partitaSmistamento.numero === 10) {
+
+
+                fineSmistamento();
+
+
+            }
+
+            else {
+
+
+                mostraDomandaSmistamento();
+
+
+            }
+
+
+        }
+
+
+
+
+
+
+
+        function fineSmistamento() {
+
+
+
+            let dati = smistamento[partitaSmistamento.tipo];
+
+
+
+            let premio = Math.floor(
+
+                (partitaSmistamento.corrette / 10) * dati.premio
+
+            );
+
+
+
+            let vecchio = record[partitaSmistamento.tipo];
+
+
+            let extra = premio - vecchio;
+
+
+
+            if (extra > 0) {
+
+
+                monete += extra;
+
+
+                record[partitaSmistamento.tipo] = premio;
+
+
+            }
+
+
+
+            giocato[partitaSmistamento.tipo] = true;
+
+
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h2>RISULTATO</h2>
+
+
+
+<h3>
+
+${partitaSmistamento.corrette}/10 corrette
+
+</h3>
+
+
+
+<p>
+
+Premio:
+${premio}/${dati.premio}
+
+</p>
+
+
+
+<p>
+
+Crediti guadagnati:
+${extra > 0 ? "+" + extra : "0"}
+
+</p>
+
+
+
+
+<button class="menu-button"
+
+onclick="mostraMenu()">
+
+⬅ TORNA AL MENU GIOCHI
+
+</button>
+
+
+</div>
+
+`;
+
+
+
+            aggiornaMonete();
+
+
+
+        }
+        // ==========================
+        // LINEA DEL TEMPO
+        // ==========================
+
+
+
+        function menuLineaTempo() {
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h1>LINEA DEL TEMPO</h1>
+
+
+<div class="categorie">
+
+
+${creaCategoriaTempo("HarryPotter")}
+
+
+${creaCategoriaTempo("Amici")}
+
+
+${creaCategoriaTempo("Lazio")}
+
+
+</div>
+
+
+
+<button class="menu-button"
+
+onclick="mostraMenu()">
+
+⬅ TORNA AL MENU GIOCHI
+
+</button>
+
+
+
+</div>
+
+`;
+
+        }
+
+
+
+
+
+
+
+
+        function creaCategoriaTempo(tipo) {
+
+
+            let dati = lineaTempo[tipo];
+
+
+            let colore = "grigia";
+
+
+            let valore = recordTempo[tipo];
+
+
+
+            if (giocatoTempo[tipo]) {
+
+
+                if (valore === 0)
+
+                    colore = "rossa";
+
+
+                else if (valore < dati.premio)
+
+                    colore = "gialla";
+
+
+                else
+
+                    colore = "verde";
+
+
+            }
+
+
+
+
+            let bottone = "";
+
+
+
+            if (colore !== "verde") {
+
+
+                bottone = `
+
+<button onclick="iniziaLineaTempo('${tipo}')">
+
+GIOCA
+
+</button>
+
+`;
+
+            }
+
+
+
+            return `
+
+<div class="categoria ${colore}">
+
+
+<h2>${dati.nome}</h2>
+
+
+<p>
+
+${dati.difficolta}
+
+</p>
+
+
+<p>
+
+🪙 ${valore}/${dati.premio}
+
+</p>
+
+
+<p>
+
+Ancora disponibili:
+${dati.premio - valore}
+
+</p>
+
+
+${bottone}
+
+
+</div>
+
+`;
+
+        }
+
+
+
+
+
+
+
+
+        let partitaTempo = {
+
+            tipo: null,
+
+            eventi: [],
+
+            posizioni: [],
+
+            selezionata: null
+
+        };
+
+
+
+
+
+
+
+
+        function iniziaLineaTempo(tipo) {
+
+
+
+            let dati = lineaTempo[tipo];
+
+
+
+            partitaTempo = {
+
+
+                tipo: tipo,
+
+
+                eventi: [...dati.eventi]
+                    .sort(() => Math.random() - 0.5),
+
+
+                posizioni: Array(10).fill(null),
+
+
+                selezionata: null
+
+
+            };
+
+
+
+            mostraLineaTempo();
+
+
+        }
+
+
+
+
+
+
+
+
+
+        function mostraLineaTempo() {
+
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h2>LINEA DEL TEMPO</h2>
+
+
+<p>
+
+Clicca una tessera e poi una posizione.
+
+Puoi spostarle e scambiarle.
+
+</p>
+
+
+
+
+
+<div class="linea">
+
+
+${partitaTempo.posizioni.map((p, i) => `
+
+
+
+<button class="posizione"
+
+onclick="scegliPosizioneTempo(${i})">
+
+
+
+${p ? p[0] : "⬜"}
+
+
+<br>
+
+${i + 1}
+
+
+
+</button>
+
+
+
+`).join("")}
+
+
+
+</div>
+
+
+
+
+
+
+<h3>TESSERE</h3>
+
+
+
+
+<div class="tessere">
+
+
+
+${partitaTempo.eventi.map((e, i) => {
+
+
+                let presente =
+
+                    partitaTempo.posizioni.includes(e);
+
+
+
+                if (presente)
+
+                    return "";
+
+
+
+                return `
+
+
+
+<button class="tessera"
+
+onclick="selezionaTempo(${i})">
+
+
+${e[0]}
+
+
+</button>
+
+
+
+`;
+
+
+            }).join("")}
+
+
+
+</div>
+
+
+
+
+
+<button class="play"
+
+onclick="confermaLineaTempo()">
+
+
+✅ CONFERMA RISPOSTE
+
+
+</button>
+
+
+
+
+
+<button class="menu-button"
+
+onclick="menuLineaTempo()">
+
+
+⬅ ESCI
+
+
+</button>
+
+
+
+</div>
+
+`;
+
+        }
+
+
+
+
+
+
+
+
+
+        function selezionaTempo(index) {
+
+
+            partitaTempo.selezionata =
+
+                partitaTempo.eventi[index];
+
+
+            mostraLineaTempo();
+
+
+        }
+
+
+
+
+
+
+
+
+        function scegliPosizioneTempo(index) {
+
+
+
+            // se clicco una posizione occupata senza selezione
+            // la prendo per spostarla
+
+
+            if (!partitaTempo.selezionata) {
+
+
+
+                if (partitaTempo.posizioni[index]) {
+
+
+                    partitaTempo.selezionata =
+
+                        partitaTempo.posizioni[index];
+
+
+                    partitaTempo.posizioni[index] = null;
+
+
+                    mostraLineaTempo();
+
+
+                }
+
+
+                return;
+
+
+            }
+
+
+
+
+
+
+            // se la posizione contiene già una tessera faccio scambio
+
+
+            if (partitaTempo.posizioni[index]) {
+
+
+
+                let vecchia =
+
+                    partitaTempo.posizioni[index];
+
+
+
+                partitaTempo.posizioni[index] =
+
+                    partitaTempo.selezionata;
+
+
+
+                partitaTempo.selezionata =
+
+                    vecchia;
+
+
+
+                mostraLineaTempo();
+
+
+                return;
+
+
+            }
+
+
+
+
+
+
+            // posizione vuota
+
+
+            partitaTempo.posizioni[index] =
+
+                partitaTempo.selezionata;
+
+
+
+            partitaTempo.selezionata = null;
+
+
+
+            mostraLineaTempo();
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+        function confermaLineaTempo() {
+
+
+
+            if (partitaTempo.posizioni.includes(null)) {
+
+
+                alert("Devi riempire tutte le posizioni");
+
+                return;
+
+
+            }
+
+
+
+
+
+            let corrette = 0;
+
+
+
+
+            partitaTempo.posizioni.forEach((evento, index) => {
+
+
+
+                if (evento[1] === index + 1)
+
+
+                    corrette++;
+
+
+
+            });
+
+
+
+
+            fineLineaTempo(corrette);
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+        function fineLineaTempo(corrette) {
+
+
+
+            let dati = lineaTempo[partitaTempo.tipo];
+
+
+
+            let premio = Math.floor(
+
+                (corrette / 10) * dati.premio
+
+            );
+
+
+
+
+            let precedente =
+
+                recordTempo[partitaTempo.tipo];
+
+
+
+
+            let guadagno =
+
+                premio - precedente;
+
+
+
+
+            if (guadagno > 0) {
+
+
+                monete += guadagno;
+
+
+                recordTempo[partitaTempo.tipo] = premio;
+
+
+            }
+
+
+
+
+
+            giocatoTempo[partitaTempo.tipo] = true;
+
+
+
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h2>RISULTATO</h2>
+
+
+<h3>
+
+${corrette}/10 corrette
+
+</h3>
+
+
+
+<p>
+
+Premio:
+
+${premio}/${dati.premio}
+
+</p>
+
+
+
+<p>
+
+Crediti ottenuti:
+
+${guadagno > 0 ? "+" + guadagno : "0"}
+
+</p>
+
+
+
+
+<button class="menu-button"
+
+onclick="mostraMenu()">
+
+⬅ TORNA AL MENU GIOCHI
+
+</button>
+
+
+
+</div>
+
+`;
+
+
+
+            aggiornaMonete();
+
+
+        }
+
+
+
+        // ==========================
+        // AVANTI UN ALTRO
+        // ==========================
+
+
+        let partitaAvanti = {
+
+            tipo: null,
+
+            domande: [],
+
+            numero: 0,
+
+            corrette: 0,
+
+            tempo: 45,
+
+            timer: null
+
+        };
+
+
+
+
+
+
+
+
+        function menuAvantiAltro() {
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h1>AVANTI UN ALTRO</h1>
+
+
+
+<div class="categorie">
+
+
+${creaCategoriaAvanti("HarryPotter")}
+
+
+${creaCategoriaAvanti("Lazio")}
+
+
+${creaCategoriaAvanti("Amici")}
+
+
+</div>
+
+
+
+
+<button class="menu-button"
+
+onclick="mostraMenu()">
+
+⬅ TORNA AL MENU GIOCHI
+
+</button>
+
+
+
+</div>
+
+`;
+
+        }
+
+
+
+
+
+
+
+
+        function creaCategoriaAvanti(tipo) {
+
+
+
+            let dati = avantiAltro[tipo];
+
+
+            let colore = "grigia";
+
+
+            let valore = recordAvanti[tipo];
+
+
+
+            if (giocatoAvanti[tipo]) {
+
+
+                if (valore === 0)
+
+                    colore = "rossa";
+
+
+                else if (valore < dati.premio)
+
+                    colore = "gialla";
+
+
+                else
+
+                    colore = "verde";
+
+
+            }
+
+
+
+
+            let bottone = "";
+
+
+
+            if (colore !== "verde") {
+
+
+                bottone = `
+
+<button onclick="iniziaAvantiAltro('${tipo}')">
+
+GIOCA
+
+</button>
+
+`;
+
+            }
+
+
+
+
+
+            return `
+
+
+<div class="categoria ${colore}">
+
+
+<h2>${dati.nome}</h2>
+
+
+<p>${dati.difficolta}</p>
+
+
+
+<p>
+
+🪙 ${valore}/${dati.premio}
+
+</p>
+
+
+<p>
+
+Ancora disponibili:
+${dati.premio - valore}
+
+</p>
+
+
+
+${bottone}
+
+
+
+</div>
+
+
+
+`;
+
+        }
+
+
+
+
+
+
+
+
+
+        function iniziaAvantiAltro(tipo) {
+
+
+
+            let dati = avantiAltro[tipo];
+
+
+
+            partitaAvanti = {
+
+
+                tipo: tipo,
+
+
+                domande: [...dati.domande]
+                    .sort(() => Math.random() - 0.5),
+
+
+                numero: 0,
+
+
+                corrette: 0,
+
+
+                tempo: 45,
+
+
+                timer: null
+
+
+            };
+
+
+
+            mostraDomandaAvanti();
+
+
+
+            avviaTimerAvanti();
+
+
+        }
+
+
+
+
+
+
+
+
+
+        function mostraDomandaAvanti() {
+
+
+            let domanda = partitaAvanti.domande[
+                partitaAvanti.numero
+            ];
+
+
+            // creo le risposte mescolate
+
+            let risposte = [
+
+                {
+                    testo: domanda[1],
+                    corretta: false
+                },
+
+
+                {
+                    testo: domanda[2],
+                    corretta: true
+                }
+
+            ];
+
+
+            // mescolo
+
+            risposte.sort(() => Math.random() - 0.5);
+
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h1>AVANTI UN ALTRO :  RISPONDI SBAGLIATO</h1>
+
+
+<h2>
+
+⏱ Tempo:
+<span id="tempo">
+
+${partitaAvanti.tempo}
+
+</span>
+
+</h2>
+
+
+
+<h3>
+
+Domanda ${partitaAvanti.numero + 1}/10
+
+</h3>
+
+
+
+<p>
+
+${domanda[0]}
+
+</p>
+
+
+
+<button class="risposta"
+
+onclick="rispostaAvanti(${risposte[0].corretta})">
+
+${risposte[1].testo}
+
+</button>
+
+
+
+
+<button class="risposta"
+
+onclick="rispostaAvanti(${risposte[1].corretta})">
+
+${risposte[0].testo}
+
+</button>
+
+
+
+
+
+<button class="menu-button"
+
+onclick="esciAvantiAltro()">
+
+⬅ ESCI
+
+</button>
+
+
+
+</div>
+
+`;
+
+        }
+
+
+
+
+
+
+
+
+        function avviaTimerAvanti() {
+
+
+
+            clearInterval(partitaAvanti.timer);
+
+
+
+            partitaAvanti.timer =
+
+                setInterval(() => {
+
+
+
+                    partitaAvanti.tempo--;
+
+
+
+                    let elemento =
+
+                        document.getElementById("tempo");
+
+
+
+                    if (elemento)
+
+                        elemento.innerHTML =
+
+                            partitaAvanti.tempo;
+
+
+
+                    if (partitaAvanti.tempo <= 0) {
+
+
+                        fineAvantiAltro();
+
+
+                    }
+
+
+
+                }, 1000);
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+        function rispostaAvanti(corretta) {
+
+
+
+            if (corretta) {
+
+                partitaAvanti.corrette++;
+
+            }
+
+
+
+            partitaAvanti.numero++;
+
+
+
+            if (partitaAvanti.numero >= 10) {
+
+
+                fineAvantiAltro();
+
+
+            }
+
+            else {
+
+
+                mostraDomandaAvanti();
+
+
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+        function fineAvantiAltro() {
+
+
+
+            clearInterval(partitaAvanti.timer);
+
+
+
+            let dati =
+
+                avantiAltro[partitaAvanti.tipo];
+
+
+
+            let premio =
+
+                Math.floor(
+
+                    (partitaAvanti.corrette / 10) * dati.premio
+
+                );
+
+
+
+
+            let precedente =
+
+                recordAvanti[partitaAvanti.tipo];
+
+
+
+            let extra =
+
+                premio - precedente;
+
+
+
+
+            if (extra > 0) {
+
+
+                monete += extra;
+
+
+                recordAvanti[partitaAvanti.tipo] = premio;
+
+
+            }
+
+
+
+
+            giocatoAvanti[partitaAvanti.tipo] = true;
+
+
+
+
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h2>RISULTATO</h2>
+
+
+<h3>
+
+${partitaAvanti.corrette}/10
+
+</h3>
+
+
+
+<p>
+
+Premio:
+
+${premio}/${dati.premio}
+
+</p>
+
+
+
+<p>
+
+Crediti ottenuti:
+
+${extra > 0 ? "+" + extra : "0"}
+
+</p>
+
+
+
+
+<button class="menu-button"
+
+onclick="mostraMenu()">
+
+⬅ TORNA AL MENU
+
+</button>
+
+
+
+</div>
+
+`;
+
+
+
+            aggiornaMonete();
+
+
+        }
+
+
+
+
+
+
+
+
+        function esciAvantiAltro() {
+
+
+            clearInterval(partitaAvanti.timer);
+
+
+            menuAvantiAltro();
+
+
+        }
+
+        // ==========================
+        // INDOVINA CHI
+        // ==========================
+
+
+        let partitaIndovina = {
+
+            tipo: null,
+
+            coppie: [],
+
+            descrizioni: [],
+
+            personaggi: [],
+
+            assegnazioni: [],
+
+            selezionata: null
+
+        };
+
+
+
+
+
+
+
+
+
+        function menuIndovinaChi() {
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h1>INDOVINA CHI</h1>
+
+
+<div class="categorie">
+
+
+${creaCategoriaIndovina("Amici")}
+
+
+${creaCategoriaIndovina("Lazio")}
+
+
+${creaCategoriaIndovina("HarryPotter")}
+
+
+
+</div>
+
+
+
+
+<button class="menu-button"
+
+onclick="mostraMenu()">
+
+⬅ TORNA AL MENU GIOCHI
+
+</button>
+
+
+
+</div>
+
+`;
+
+        }
+
+
+
+
+
+
+
+
+        function creaCategoriaIndovina(tipo) {
+
+
+
+            let dati = indovinaChi[tipo];
+
+
+            let valore = recordIndovina[tipo];
+
+
+            let colore = "grigia";
+
+
+
+            if (giocatoIndovina[tipo]) {
+
+
+                if (valore === 0)
+
+                    colore = "rossa";
+
+
+                else if (valore < dati.premio)
+
+                    colore = "gialla";
+
+
+                else
+
+                    colore = "verde";
+
+
+            }
+
+
+
+
+            let bottone = "";
+
+
+
+            if (colore !== "verde") {
+
+
+                bottone = `
+
+<button onclick="iniziaIndovinaChi('${tipo}')">
+
+GIOCA
+
+</button>
+
+`;
+
+            }
+
+
+
+
+
+            return `
+
+<div class="categoria ${colore}">
+
+
+<h2>${dati.nome}</h2>
+
+
+<p>${dati.difficolta}</p>
+
+
+
+<p>
+
+🪙 ${valore}/${dati.premio}
+
+</p>
+
+
+
+<p>
+
+Ancora disponibili:
+${dati.premio - valore}
+
+</p>
+
+
+
+${bottone}
+
+
+</div>
+
+
+`;
+
+        }
+
+
+
+
+
+
+
+
+
+        function iniziaIndovinaChi(tipo) {
+
+
+
+            let dati = indovinaChi[tipo];
+
+
+
+            let coppie = [...dati.coppie]
+                .sort(() => Math.random() - 0.5);
+
+
+
+            partitaIndovina = {
+
+
+                tipo: tipo,
+
+
+                coppie: coppie,
+
+
+                descrizioni: coppie.map(x => x[0]),
+
+
+                personaggi: coppie.map(x => x[1])
+                    .sort(() => Math.random() - 0.5),
+
+
+                assegnazioni: Array(10).fill(null),
+
+
+                selezionata: null
+
+
+            };
+
+
+
+            mostraIndovinaChi();
+
+
+        }
+
+
+
+
+
+
+
+
+
+        function mostraIndovinaChi() {
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h2>INDOVINA CHI</h2>
+
+
+<p>
+
+Abbina ogni descrizione al personaggio corretto.
+
+</p>
+
+
+
+<div class="contenitore-indovina">
+
+
+
+<!-- COLONNA DESCRIZIONI -->
+
+<div class="lista-descrizioni">
+
+
+
+<h3>DESCRIZIONI</h3>
+
+
+
+${partitaIndovina.descrizioni.map((d, i) => `
+
+
+<div class="riga-indovina">
+
+
+
+<div class="descrizione">
+
+${i + 1}. ${d}
+
+</div>
+
+
+
+
+<button class="spazio-personaggio"
+
+onclick="scegliDescrizione(${i})">
+
+
+${partitaIndovina.assegnazioni[i]
+
+                    ? partitaIndovina.assegnazioni[i]
+
+                    : "⬜"}
+
+</button>
+
+
+
+</div>
+
+
+
+`).join("")}
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- COLONNA TESSERE -->
+
+<div class="lista-personaggi">
+
+
+
+<h3>PERSONAGGI</h3>
+
+
+
+
+${partitaIndovina.personaggi.map((p, i) => {
+
+
+
+                        // controllo se è già stato inserito
+
+                        let usato =
+
+                            partitaIndovina.assegnazioni.includes(p);
+
+
+
+                        // se è già presente NON lo mostro
+
+                        if (usato)
+
+                            return "";
+
+
+
+                        return `
+
+
+<button class="tessera"
+
+onclick="selezionaPersonaggio(${i})">
+
+
+${p}
+
+
+</button>
+
+
+
+`;
+
+
+
+                    }).join("")}
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<button class="play"
+
+onclick="confermaIndovinaChi()">
+
+
+✅ CONFERMA RISPOSTE
+
+
+</button>
+
+
+
+
+
+<button class="menu-button"
+
+onclick="menuIndovinaChi()">
+
+
+⬅ ESCI
+
+
+</button>
+
+
+
+</div>
+
+`;
+
+        }
+
+
+
+
+
+
+
+
+        function selezionaPersonaggio(index) {
+
+
+            partitaIndovina.selezionata =
+
+                partitaIndovina.personaggi[index];
+
+
+            mostraIndovinaChi();
+
+
+        }
+
+
+
+
+
+
+
+
+
+        function scegliDescrizione(index) {
+
+
+
+            if (!partitaIndovina.selezionata) {
+
+
+
+                if (partitaIndovina.assegnazioni[index]) {
+
+
+                    partitaIndovina.selezionata =
+
+                        partitaIndovina.assegnazioni[index];
+
+
+                    partitaIndovina.assegnazioni[index] = null;
+
+
+                    mostraIndovinaChi();
+
+
+                }
+
+
+                return;
+
+
+            }
+
+
+
+
+
+            if (partitaIndovina.assegnazioni[index]) {
+
+
+
+                let vecchio =
+
+                    partitaIndovina.assegnazioni[index];
+
+
+
+                partitaIndovina.assegnazioni[index] =
+
+                    partitaIndovina.selezionata;
+
+
+
+                partitaIndovina.selezionata =
+
+                    vecchio;
+
+
+
+                mostraIndovinaChi();
+
+
+
+                return;
+
+
+            }
+
+
+
+
+
+            partitaIndovina.assegnazioni[index] =
+
+                partitaIndovina.selezionata;
+
+
+
+            partitaIndovina.selezionata = null;
+
+
+
+            mostraIndovinaChi();
+
+
+        }
+
+
+
+
+
+
+
+
+
+        function confermaIndovinaChi() {
+
+
+
+            if (partitaIndovina.assegnazioni.includes(null)) {
+
+
+                alert("Completa tutti gli abbinamenti");
+
+                return;
+
+
+            }
+
+
+
+
+            let corrette = 0;
+
+
+
+            partitaIndovina.assegnazioni.forEach((persona, index) => {
+
+
+
+                if (persona === partitaIndovina.coppie[index][1])
+
+                    corrette++;
+
+
+
+            });
+
+
+
+
+
+            fineIndovinaChi(corrette);
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+        function fineIndovinaChi(corrette) {
+
+
+
+            let dati =
+
+                indovinaChi[partitaIndovina.tipo];
+
+
+
+            let premio =
+
+                Math.floor(
+
+                    (corrette / 10) * dati.premio
+
+                );
+
+
+
+
+            let precedente =
+
+                recordIndovina[partitaIndovina.tipo];
+
+
+
+            let extra =
+
+                premio - precedente;
+
+
+
+
+            if (extra > 0) {
+
+
+                monete += extra;
+
+
+                recordIndovina[partitaIndovina.tipo] = premio;
+
+
+            }
+
+
+
+
+            giocatoIndovina[partitaIndovina.tipo] = true;
+
+
+
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h2>RISULTATO</h2>
+
+
+
+<h3>
+
+${corrette}/10 corrette
+
+</h3>
+
+
+
+<p>
+
+Premio:
+${premio}/${dati.premio}
+
+</p>
+
+
+
+<p>
+
+Crediti ottenuti:
+${extra > 0 ? "+" + extra : "0"}
+
+</p>
+
+
+
+<button class="menu-button"
+
+onclick="mostraMenu()">
+
+⬅ TORNA AL MENU GIOCHI
+
+</button>
+
+
+
+</div>
+
+`;
+
+
+
+            aggiornaMonete();
+
+
+        }
+        // ==========================
+        // CRUCIVERBONE
+        // ==========================
+
+
+       let  partitaCruciverbone = {
+
+            griglia:
+                cruciverbone.soluzione.map(riga =>
+                    riga.map(c => c === "#" ? "#" : "")
+                ),
+
+            numeri: creaNumerazioneCruciverbone(),
+
+            celle: []
+
+       };
+
+        document.addEventListener("keydown", function (e) {
+
+
+
+            if (!cellaSelezionata)
+
+                return;
+
+
+
+            let lettera = e.key.toUpperCase();
+
+
+
+            if (lettera.length === 1 && lettera.match(/[A-Z]/)) {
+
+
+                scriviCella(
+
+                    cellaSelezionata.r,
+
+                    cellaSelezionata.c,
+
+                    lettera
+
+                );
+
+
+            }
+
+
+
+            if (e.key === "Backspace") {
+
+
+                partitaCruciverbone.griglia[
+                    cellaSelezionata.r
+                ][
+                    cellaSelezionata.c
+                ] = "";
+
+
+                let cella = document.getElementById(
+
+                    "cella-" +
+
+                    cellaSelezionata.r +
+
+                    "-" +
+
+                    cellaSelezionata.c
+
+                );
+
+
+                let numero = partitaCruciverbone.numeri[
+                    cellaSelezionata.r
+                ][
+                    cellaSelezionata.c
+                ];
+
+
+                if (cella) {
+
+                    cella.innerHTML =
+                        (numero ? `<span class="numero">${numero}</span>` : "") +
+                        `<span class="lettera"></span>`;
+
+                }
+
+            }
+
+
+
+        });
+
+        let direzioneCruciverbone = "orizzontale";
+
+        let cellaSelezionata = {
+
+            r: 0,
+
+            c: 0
+
+        };
+
+
+
+
+        function iniziaCruciverbone() {
+
+            partitaCruciverbone = {
+
+                griglia:
+                    cruciverbone.soluzione.map(riga =>
+                        riga.map(c => c === "#" ? "#" : "")
+                    ),
+
+                numeri: creaNumerazioneCruciverbone(),
+
+                celle: []
+
+            };
+
+
+            mostraCruciverbone();
+            if (crucicorretto==1) {
+
+                mostraSoluzioneCruciverbone();
+
+                mostraCerchiBlu();
+
+               
+
+            }
+
+        }
+
+
+        function mostraSoluzioneCruciverbone() {
+
+
+            for (let i = 0; i < cruciverbone.soluzione.length; i++) {
+
+
+                for (let j = 0; j < cruciverbone.soluzione[i].length; j++) {
+
+
+                    if (cruciverbone.soluzione[i][j] !== "#") {
+
+
+                        partitaCruciverbone.griglia[i][j] =
+                            cruciverbone.soluzione[i][j];
+
+
+                        let cella = document.getElementById(
+                            "cella-" + i + "-" + j
+                        );
+
+
+                        if (cella) {
+
+
+                            let numero =
+                                partitaCruciverbone.numeri[i][j];
+
+
+                            cella.innerHTML =
+                                (numero
+                                    ? `<span class="numero">${numero}</span>`
+                                    : "")
+                                +
+                                `<span class="lettera">
+                        ${cruciverbone.soluzione[i][j]}
+                        </span>`;
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+
+
+        function mostraCruciverbone() {
+
+
+            app.innerHTML = `
+
+<div class="card">
+
+
+<h1>CRUCIVERBONE</h1>
+
+
+<p>
+
+Completa il cruciverba e poi conferma.
+
+</p>
+
+
+
+<div class="cruciverba">
+
+
+${partitaCruciverbone.griglia.map((riga, i) => {
+
+
+                return riga.map((c, j) => {
+
+
+                    if (cruciverbone.soluzione[i][j] === "#") {
+
+
+                        return `
+
+<div class="nera"></div>
+
+`;
+
+
+                    }
+
+
+
+                    return `
+
+<div
+id="cella-${i}-${j}"
+class="cella"
+onclick="selezionaCella(${i},${j})"
+>
+
+${partitaCruciverbone.numeri[i][j]
+                            ? `<span class="numero">${partitaCruciverbone.numeri[i][j]}</span>`
+                            : ""
+                        }
+
+<span class="lettera">${c}</span>
+
+</div>
+
+`;
+
+
+
+                }).join("");
+
+
+
+            }).join("")}
+
+
+
+</div>
+
+
+
+
+<h3>DOMANDE</h3>
+
+<div class="contenitore-domande">
+
+    <div class="domande-colonna">
+
+        <h4>Orizzontali</h4>
+
+        <div class="lista-domande">
+
+        ${
+                cruciverbone.domande
+                    .filter(d => d.tipo === "orizzontale")
+                    .map(d => `
+
+                <p>
+                    <b>${d.numero})</b>
+                    ${d.testo}
+                </p>
+
+            `).join("")
+                }
+
+        </div>
+
+    </div>
+
+
+    <div class="domande-colonna">
+
+        <h4>Verticali</h4>
+
+        <div class="lista-domande">
+
+        ${cruciverbone.domande
+                    .filter(d => d.tipo === "verticale")
+                    .map(d => `
+
+                <p>
+                    <b>${d.numero})</b>
+                    ${d.testo}
+                </p>
+
+            `).join("")
+        }
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<button class="play"
+
+onclick="confermaCruciverbone()">
+
+✅ CONFERMA CRUCIVERBONE
+
+</button>
+
+<button class="menu-button"
+
+onclick="rivelaCaselleErrate()">
+
+🔴 RIVELA CASELLE ERRATE
+
+</button>
+
+<button class="menu-button" onclick="mostraMenu()">
+
+⬅ ESCI
+
+</button>
+
+
+
+</div>
+
+`;
+
+        }
+       
+
+    
+
+
+
+
+        function scriviCella(r, c, lettera) {
+
+
+            lettera = lettera.toUpperCase();
+
+
+
+            partitaCruciverbone.griglia[r][c] = lettera;
+
+
+
+            let cella = document.getElementById(
+
+                "cella-" + r + "-" + c
+
+            );
+
+
+
+            if (cella) {
+
+                let numero = partitaCruciverbone.numeri[r][c];
+
+                cella.innerHTML =
+                    (numero ? `<span class="numero">${numero}</span>` : "") +
+                    `<span class="lettera">${lettera}</span>`;
+
+                cella.classList.remove("errore");
+
+            }
+
+
+
+            vaiAllaProssimaCella(r, c);
+
+
+
+        }
+
+        function vaiAllaProssimaCella(r, c) {
+
+
+            let nr = r;
+
+            let nc = c;
+
+
+
+            if (direzioneCruciverbone === "orizzontale") {
+
+
+                nc++;
+
+
+            }
+            else {
+
+
+                nr++;
+
+
+            }
+
+
+
+            // cerco la prossima casella valida
+
+            while (
+
+                nr >= 0 &&
+
+                nr < cruciverbone.soluzione.length &&
+
+                nc >= 0 &&
+
+                nc < cruciverbone.soluzione[0].length &&
+
+                cruciverbone.soluzione[nr][nc] === "#"
+
+            ) {
+
+
+
+                if (direzioneCruciverbone === "orizzontale") {
+
+                    nc++;
+
+                }
+
+                else {
+
+                    nr++;
+
+                }
+
+
+
+            }
+
+
+
+
+            if (
+
+                nr >= 0 &&
+
+                nr < cruciverbone.soluzione.length &&
+
+                nc >= 0 &&
+
+                nc < cruciverbone.soluzione[0].length
+
+            ) {
+
+
+
+                let prossima = document.getElementById(
+
+                    "cella-" + nr + "-" + nc
+
+                );
+
+
+
+                if (prossima) {
+
+
+                    selezionaCella(nr, nc);
+
+
+                }
+
+
+
+            }
+
+
+
+        }
+
+
+
+        function selezionaCella(r, c) {
+
+
+            let stessaCella =
+
+                cellaSelezionata.r === r &&
+
+                cellaSelezionata.c === c;
+
+
+
+            let orizzontale = haParolaOrizzontale(r, c);
+
+            let verticale = haParolaVerticale(r, c);
+
+
+
+            // cambio orientamento solo se clicco la stessa casella
+
+            if (stessaCella && orizzontale && verticale) {
+
+
+                if (direzioneCruciverbone === "orizzontale") {
+
+                    direzioneCruciverbone = "verticale";
+
+                }
+
+                else {
+
+                    direzioneCruciverbone = "orizzontale";
+
+                }
+
+
+            }
+
+
+
+            // se è una casella non incrocio imposto la direzione corretta
+
+            else if (!orizzontale && verticale) {
+
+
+                direzioneCruciverbone = "verticale";
+
+
+            }
+
+            else if (orizzontale && !verticale) {
+
+
+                direzioneCruciverbone = "orizzontale";
+
+
+            }
+
+
+
+            cellaSelezionata = {
+
+                r: r,
+
+                c: c
+
+            };
+
+
+
+            evidenziaParola();
+
+
+
+        }
+        function haParolaOrizzontale(r, c) {
+
+
+            return (
+
+                (c > 0 && cruciverbone.soluzione[r][c - 1] !== "#")
+
+                ||
+
+                (c < cruciverbone.soluzione[0].length - 1 && cruciverbone.soluzione[r][c + 1] !== "#")
+
+            );
+
+
+        }
+
+
+
+
+        function haParolaVerticale(r, c) {
+
+
+            return (
+
+                (r > 0 && cruciverbone.soluzione[r - 1][c] !== "#")
+
+                ||
+
+                (r < cruciverbone.soluzione.length - 1 && cruciverbone.soluzione[r + 1][c] !== "#")
+
+            );
+
+
+        }
+        function evidenziaParola() {
+
+
+            document.querySelectorAll(".cella")
+                .forEach(c => {
+
+
+                    c.classList.remove("parola");
+
+                    c.classList.remove("selezionata");
+
+
+                });
+
+
+
+            let r = cellaSelezionata.r;
+
+            let c = cellaSelezionata.c;
+
+
+
+            if (direzioneCruciverbone === "orizzontale") {
+
+
+
+                // vado a sinistra fino all'inizio
+
+                while (
+
+                    c > 0 &&
+
+                    cruciverbone.soluzione[r][c - 1] !== "#"
+
+                ) {
+
+                    c--;
+
+                }
+
+
+
+
+                while (
+
+                    c < cruciverbone.soluzione[0].length &&
+
+                    cruciverbone.soluzione[r][c] !== "#"
+
+                ) {
+
+
+
+                    document.getElementById(
+
+                        "cella-" + r + "-" + c
+
+                    ).classList.add("parola");
+
+
+
+                    c++;
+
+
+                }
+
+
+
+            }
+
+
+
+            else {
+
+
+
+                // vado sopra fino all'inizio
+
+                while (
+
+                    r > 0 &&
+
+                    cruciverbone.soluzione[r - 1][c] !== "#"
+
+                ) {
+
+                    r--;
+
+                }
+
+
+
+
+                while (
+
+                    r < cruciverbone.soluzione.length &&
+
+                    cruciverbone.soluzione[r][c] !== "#"
+
+                ) {
+
+
+
+                    document.getElementById(
+
+                        "cella-" + r + "-" + c
+
+                    ).classList.add("parola");
+
+
+
+                    r++;
+
+
+                }
+
+
+            }
+
+
+
+
+
+            document.getElementById(
+
+                "cella-" + cellaSelezionata.r + "-" + cellaSelezionata.c
+
+            ).classList.add("selezionata");
+
+
+
+        }
+
+
+        function confermaCruciverbone() {
+
+
+            let errori = 0;
+
+
+
+            for (let i = 0; i < cruciverbone.soluzione.length; i++) {
+
+
+                for (let j = 0; j < cruciverbone.soluzione[i].length; j++) {
+
+
+
+                    let soluzione =
+
+                        cruciverbone.soluzione[i][j];
+
+
+
+                    if (soluzione !== "#") {
+
+
+
+                        let inserita =
+
+                            partitaCruciverbone.griglia[i][j];
+
+
+
+                        if (inserita !== soluzione) {
+
+
+                            errori++;
+
+
+                        }
+
+
+
+                    }
+
+
+
+                }
+
+
+            }
+
+        
+            if (errori === 0) {
+
+                
+                alert("✅ Cruciverbone corretto! Controlla le caselle blu per scoprire il tuo regalo, poi torna al menu per sbloccare contenuti extra...");
+                
+                mostraBottoneExtra();
+                mostraCerchiBlu();
+                crucicorretto = 1
+            }
+
+            else {
+
+
+                alert(
+
+                    "❌ Ci sono " + errori + " caselle sbagliate"
+
+                );
+
+
+            }
+
+
+
+        }
+        function mostraBottoneExtra() {
+
+            let bottone = document.getElementById("torna-menu-extra");
+
+
+            if (bottone)
+                return;
+
+
+            document.body.insertAdjacentHTML(
+                "afterbegin",
+
+                `
+        <button 
+            id="torna-menu-extra"
+            class="bottone-extra"
+            onclick="tornaMenuExtra()">
+
+            ⬅ TORNA AL MENU<br>
+            🔓 SBLOCCA CONTENUTI EXTRA
+
+        </button>
+        `
+            );
+
+        }
+        function creaNumerazioneCruciverbone() {
+
+            let numeri = [];
+
+            let numero = 1;
+
+
+            for (let i = 0; i < cruciverbone.soluzione.length; i++) {
+
+                numeri[i] = [];
+
+                for (let j = 0; j < cruciverbone.soluzione[i].length; j++) {
+
+                    numeri[i][j] = "";
+
+                    // se è nera salto
+                    if (cruciverbone.soluzione[i][j] === "#")
+                        continue;
+
+
+                    let inizioOrizzontale =
+                        (j === 0 || cruciverbone.soluzione[i][j - 1] === "#")
+                        &&
+                        (j < cruciverbone.soluzione[i].length - 1 &&
+                            cruciverbone.soluzione[i][j + 1] !== "#");
+
+
+                    let inizioVerticale =
+                        (i === 0 || cruciverbone.soluzione[i - 1][j] === "#")
+                        &&
+                        (i < cruciverbone.soluzione.length - 1 &&
+                            cruciverbone.soluzione[i + 1][j] !== "#");
+
+
+
+                    if (inizioOrizzontale || inizioVerticale) {
+
+                        numeri[i][j] = numero;
+
+                        numero++;
+
+                    }
+
+                }
+
+            }
+
+
+            return numeri;
+
+        }
+        function tornaMenuExtra() {
+
+            let bottone = document.getElementById("torna-menu-extra");
+
+            if (bottone) {
+                bottone.remove();
+            }
+
+
+            mostraMenu();
+
+        }
+        function apriContenutiSpeciali() {
+
+            app.innerHTML = `
+
+        <div class="card speciale">
+
+            <h1>🎉 Bravissima!</h1>
+
+            <h2>
+                Hai vinto un altro regalino!
+            </h2>
+
+            <p>
+                Scrivi sul gruppo <b>Forza Lube</b> 
+                la parola d'ordine:
+            </p>
+
+            <h3>
+                "Sono una cacca, sono una buffona!"
+            </h3>
+
+            <p>
+                per ottenere il tuo premio 🎁
+            </p>
+
+            <button class="play" onclick="mostraMenu()">
+                TORNA AL MENU
+            </button>
+
+        </div>
+
+    `;
+
+        }
+        function mostraCerchiBlu() {
+
+            cruciverbone.cerchiBlu.forEach(c => {
+
+                let cella = document.getElementById(
+                    "cella-" + c.r + "-" + c.c
+                );
+
+
+                if (cella) {
+
+                    cella.classList.add("cerchio-blu");
+
+                }
+
+            });
+
+        }
+        function rivelaCaselleErrate() {
+
+
+
+            // prima pulisco tutti gli errori vecchi
+
+            document.querySelectorAll(".cella")
+
+                .forEach(cella => {
+
+
+                    cella.classList.remove("errore");
+
+
+                });
+
+
+
+
+
+            for (let i = 0; i < cruciverbone.soluzione.length; i++) {
+
+
+
+                for (let j = 0; j < cruciverbone.soluzione[i].length; j++) {
+
+
+
+                    let soluzione =
+
+                        cruciverbone.soluzione[i][j];
+
+
+
+                    if (soluzione !== "#") {
+
+
+
+                        let inserita =
+
+                            partitaCruciverbone.griglia[i][j];
+
+
+
+                        if (
+
+                            inserita !== "" &&
+
+                            inserita !== soluzione
+
+                        ) {
+
+
+
+                            let cella = document.getElementById(
+
+                                "cella-" + i + "-" + j
+
+                            );
+
+
+
+                            if (cella) {
+
+
+                                cella.classList.add("errore");
+
+
+                            }
+
+
+
+                        }
+
+
+
+                    }
+
+
+
+                }
+
+
+
+            }
+
+
+
+        }
+       
+        // ==========================
+        // AVVIO
+        // ==========================
+
+
+        mostraMenu();
+
+        aggiornaMonete();
+
+
+
+    </script>
+
+</body >
+</html >
