@@ -451,7 +451,7 @@
         // ==========================
 
 
-        let monete = 0;
+        let monete = 1000;
 
 
         const app = document.getElementById("app");
@@ -4577,7 +4577,18 @@ ${partitaCruciverbone.numeri[i][j]
 </div>
 
 
-
+<input 
+id="input-ipad"
+type="text"
+autocomplete="off"
+autocorrect="off"
+autocapitalize="characters"
+style="
+position:absolute;
+opacity:0;
+height:1px;
+width:1px;
+">
 
 <h3>DOMANDE</h3>
 
@@ -4661,6 +4672,23 @@ onclick="rivelaCaselleErrate()">
 </div>
 
 `;
+
+            document.getElementById("input-ipad").addEventListener("input", function (e) {
+
+
+                let lettera = e.target.value.slice(-1).toUpperCase();
+
+
+                if (lettera >= "A" && lettera <= "Z") {
+
+                    scriviCella(lettera);
+
+                }
+
+
+                e.target.value = "";
+
+            });
 
         }
        
@@ -4883,9 +4911,17 @@ onclick="rivelaCaselleErrate()">
 
             evidenziaParola();
 
+            let input = document.getElementById("input-ipad");
 
+            if (input) {
+
+                input.focus();
+
+            }
 
         }
+  
+
         function haParolaOrizzontale(r, c) {
 
 
