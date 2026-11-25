@@ -472,7 +472,7 @@
         // ==========================
 
 
-        const giochi = [
+        let giochi = [
 
             {
                 nome: "SMISTAMENTO",
@@ -510,11 +510,12 @@
 
         ];
 
+       
 
         let prossimo = 0;
 
 
-
+       
 
 
 
@@ -1535,7 +1536,8 @@
 
         };
 
-
+        let rigaSelezionata = null;
+        let colonnaSelezionata = null;
 
 
         let recordTempo = {
@@ -1597,7 +1599,18 @@
             Amici: false
 
         };
+        let partitaCruciverbone = {
 
+            griglia:
+                cruciverbone.soluzione.map(riga =>
+                    riga.map(c => c === "#" ? "#" : "")
+                ),
+
+            numeri: creaNumerazioneCruciverbone(),
+
+            celle: []
+
+        };
         // ==========================
         // MENU PRINCIPALE
         // ==========================
@@ -1606,6 +1619,124 @@
 
 
         let costoContenutoSpeciale = 360;
+        let salvataggio = {
+
+            nome: "",
+
+            monete: 0,
+
+            prossimo: 0,
+
+            giochi: giochi,
+
+            record: record,
+            recordAvanti: recordAvanti,
+            recordIndovina: recordIndovina,
+            recordTempo: recordTempo,
+            contenutoSpecialeSbloccato: 0,
+            crucicorretto: 0,
+            giocato: giocato,
+            giocatoAvanti: giocatoAvanti,
+            giocatoIndovina: giocatoIndovina,
+            giocatoTempo: giocatoTempo,
+            partitaCruciverbone: null
+           
+
+          
+
+
+        };
+
+
+
+        function avvioGiocatore() {
+
+            let nomeInserito = prompt("Inserisci il tuo nome");
+
+
+            if (!nomeInserito) {
+
+                nomeInserito = "Giocatore";
+
+            }
+
+
+            let datiSalvati = localStorage.getItem(
+                "giocatore_" + nomeInserito
+            );
+
+
+            if (datiSalvati) {
+
+                // recupera i dati esistenti
+
+                salvataggio = JSON.parse(datiSalvati);
+
+                console.log("Caricato giocatore:", salvataggio.nome);
+
+
+            }
+            else {
+
+                // nuovo giocatore
+
+                salvataggio.nome = nomeInserito;
+
+
+                salvataggio.monete = 0;
+
+                salvataggio.prossimo = 0;
+
+                salvataggio.contenutoSpecialeSbloccato = 0;
+
+                salvataggio.crucicorretto = 0;
+
+
+                console.log("Creato nuovo giocatore:", nomeInserito);
+
+
+                salvaGiocatore();
+
+            }
+
+
+            // aggiorna le variabili che usa già il gioco
+
+            monete = salvataggio.monete;
+
+            prossimo = salvataggio.prossimo;
+
+            contenutoSpecialeSbloccato =
+                salvataggio.contenutoSpecialeSbloccato;
+
+            crucicorretto =
+                salvataggio.crucicorretto;
+            giochi = salvataggio.giochi;
+            record = salvataggio.record;
+            recordAvanti = salvataggio.recordAvanti;
+            recordIndovina = salvataggio.recordIndovina;
+            recordTempo = salvataggio.recordTempo;
+            giocato = salvataggio.giocato;
+            giocatoAvanti = salvataggio.giocatoAvanti;
+            giocatoIndovina = salvataggio.giocatoIndovina;
+            giocatoTempo = salvataggio.giocatoTempo
+            partitaCruciverbone = salvataggio.partitaCruciverbone
+
+        }
+
+        function salvaGiocatore() {
+
+            localStorage.setItem(
+
+                "giocatore_" + salvataggio.nome,
+
+                JSON.stringify(salvataggio)
+
+            );
+
+        }
+
+
 
         function mostraMenu() {
 
@@ -1799,11 +1930,13 @@ GIOCA
 
 
                     giochi[prossimo].sbloccato = true;
+                    salvataggio.monete = monete
+                    salvataggio.giochi=giochi
 
 
                     prossimo++;
-
-
+                    salvataggio.prossimo = prossimo;
+                    salvaGiocatore();
                     aggiornaMonete();
 
 
@@ -1867,13 +2000,11 @@ GIOCA
 
 
                         contenutoSpecialeSbloccato = 1;
+                        salvataggio.monete = monete
+                        salvataggio.giochi = giochi
+                        salvataggio.contenutoSpecialeSbloccato =1
 
-
-                        localStorage.setItem(
-                            "contenutoSpecialeSbloccato",
-                            "true"
-                        );
-
+                        salvaGiocatore();
 
                         aggiornaMonete();
 
@@ -2296,9 +2427,10 @@ onclick="menuSmistamento()">
 
 
                 monete += extra;
-
+               
 
                 record[partitaSmistamento.tipo] = premio;
+               
 
 
             }
@@ -2306,8 +2438,11 @@ onclick="menuSmistamento()">
 
 
             giocato[partitaSmistamento.tipo] = true;
-
-
+            salvataggio.monete = monete
+            salvataggio.giochi = giochi
+            salvataggio.record = record
+            salvataggio.giocato=giocato
+            salvaGiocatore();
 
 
             app.innerHTML = `
@@ -2963,8 +3098,11 @@ onclick="menuLineaTempo()">
 
 
             giocatoTempo[partitaTempo.tipo] = true;
-
-
+            salvataggio.monete = monete
+            salvataggio.giochi = giochi
+            salvataggio.recordTempo = recordTempo
+            salvataggio.giocatoTempo = giocatoTempo
+            salvaGiocatore();
 
 
 
@@ -3536,8 +3674,11 @@ onclick="esciAvantiAltro()">
 
             giocatoAvanti[partitaAvanti.tipo] = true;
 
-
-
+            salvataggio.monete = monete
+            salvataggio.giochi = giochi
+            salvataggio.recordAvanti = recordAvanti
+            salvataggio.giocatoAvanti = giocatoAvanti
+            salvaGiocatore();
 
 
 
@@ -4256,10 +4397,13 @@ onclick="menuIndovinaChi()">
 
 
             giocatoIndovina[partitaIndovina.tipo] = true;
+            salvataggio.monete = monete
+            salvataggio.giochi = giochi
+            salvataggio.recordIndovina = recordIndovina
+            salvataggio.giocatoIndovina = giocatoIndovina
 
 
-
-
+            salvaGiocatore();
 
             app.innerHTML = `
 
@@ -4321,18 +4465,7 @@ onclick="mostraMenu()">
         // ==========================
 
 
-       let  partitaCruciverbone = {
-
-            griglia:
-                cruciverbone.soluzione.map(riga =>
-                    riga.map(c => c === "#" ? "#" : "")
-                ),
-
-            numeri: creaNumerazioneCruciverbone(),
-
-            celle: []
-
-       };
+ 
 
         document.addEventListener("keydown", function (e) {
 
@@ -4424,19 +4557,26 @@ onclick="mostraMenu()">
 
 
         function iniziaCruciverbone() {
+            if (salvataggio.partitaCruciverbone) {
 
-            partitaCruciverbone = {
 
-                griglia:
-                    cruciverbone.soluzione.map(riga =>
-                        riga.map(c => c === "#" ? "#" : "")
-                    ),
+                partitaCruciverbone = salvataggio.partitaCruciverbone;
 
-                numeri: creaNumerazioneCruciverbone(),
 
-                celle: []
+            } else {
+                partitaCruciverbone = {
 
-            };
+                    griglia:
+                        cruciverbone.soluzione.map(riga =>
+                            riga.map(c => c === "#" ? "#" : "")
+                        ),
+
+                    numeri: creaNumerazioneCruciverbone(),
+
+                    celle: []
+
+                }
+            }    ;
 
 
             mostraCruciverbone();
@@ -4672,6 +4812,9 @@ onclick="rivelaCaselleErrate()">
 </div>
 
 `;
+            if (!("ontouchstart" in window)) {
+                return;
+            }
 
             document.getElementById("input-ipad").addEventListener("input", function (e) {
 
@@ -4681,7 +4824,7 @@ onclick="rivelaCaselleErrate()">
 
                 if (lettera >= "A" && lettera <= "Z") {
 
-                    scriviCella(lettera);
+                    scriviCella(rigaSelezionata,colonnaSelezionata, lettera);
 
                 }
 
@@ -4701,12 +4844,14 @@ onclick="rivelaCaselleErrate()">
         function scriviCella(r, c, lettera) {
 
 
-            lettera = lettera.toUpperCase();
 
-
-
+        
+        
+           
+            
             partitaCruciverbone.griglia[r][c] = lettera;
-
+            salvataggio.partitaCruciverbone = partitaCruciverbone;
+            salvaGiocatore();
 
 
             let cella = document.getElementById(
@@ -4841,7 +4986,12 @@ onclick="rivelaCaselleErrate()">
 
 
         function selezionaCella(r, c) {
+            rigaSelezionata = r;
 
+            colonnaSelezionata = c;
+
+
+        
 
             let stessaCella =
 
@@ -5148,6 +5298,8 @@ onclick="rivelaCaselleErrate()">
                 mostraBottoneExtra();
                 mostraCerchiBlu();
                 crucicorretto = 1
+                salvataggio.crucicorretto = 1
+                salvaGiocatore();
             }
 
             else {
@@ -5155,7 +5307,7 @@ onclick="rivelaCaselleErrate()">
 
                 alert(
 
-                    "❌ Ci sono " + errori + " caselle sbagliate"
+                    "❌ Ci sono " + errori + " caselle sbagliate/mancanti"
 
                 );
 
@@ -5397,9 +5549,9 @@ onclick="rivelaCaselleErrate()">
         }
        
         // ==========================
-        // AVVIO
+// AVVIO
         // ==========================
-
+        avvioGiocatore();
 
         mostraMenu();
 
